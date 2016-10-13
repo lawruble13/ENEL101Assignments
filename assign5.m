@@ -27,11 +27,25 @@ x0=0.25;
 solutions(8).ans=question8(f,x0*factor)
 
     function [answer]=question1(n)
-      answer=zeros(3,n);
+        t=zeros(3,n);
+        for i=1:3
+            for j=1:n
+                t(i,j)=(i^j)/(i+j);
+            end
+        end
+        answer=t;
     end
 
     function [answer]=question2(n)
-      answer=zeros(1,n);
+        f=ones(1,n);
+        for i=3:n
+            f(i)=f(i-1)+f(i-2);
+        end
+        t=ones(1,n);
+        for j=1:n
+            t(j)=sum(1./f(1,1:j));
+        end
+        answer=t;
     end
 
     
@@ -66,18 +80,50 @@ solutions(8).ans=question8(f,x0*factor)
     end
 
     function [answer]=question5(Vratio,R,L)
-      answer=0;
+        w=(sqrt((1/abs(Vratio))^2 - 1)*R/L);
+        answer=w;
     end
     
     function [answer]=question6(x)
-      answer=[0 0];
+      while(x < -2*pi)
+          x=x+2*pi;
+      end
+      while(x > 2*pi)
+          x=x-2*pi;
+      end
+      e=1;
+      n=0;
+      Sp=0;
+      a=0;
+      S=0;
+      while e >= 0.000001
+          Sp=S;
+          a=((-1)^n)*x^(2*n)/(factorial(2*n));
+          S=S+a;
+          e=abs(a/Sp);
+          n=n+1;
+      end
+      answer=[S n-1];
     end
 
     function [answer]=question7(P)
-      answer=0;
+      e=1;
+      n=0;
+      x=P;
+      while e >= 0.000001
+          xp=x;
+          a=-(x^5-P)/(5*x^4)
+          x=x+a;
+          e=abs(a/xp);
+          n=n+1;
+      end
+      answer=[x n];
     end
      
     function [answer]=question8(f,x)
-      answer=0;
+      h=x/10;
+      n=f(x-2*h)-f(x-h)+f(x+h)-f(x+2*h);
+      d=12*h;
+      answer=[n d n/d];
     end
 end
